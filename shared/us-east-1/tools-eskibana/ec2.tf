@@ -11,9 +11,9 @@ module "ec2_elasticsearch_kibana" {
   tag_approved_ami_value = var.tag_approved_ami_value
 
   instance_type = var.instance_type
-  vpc_id        = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id        = var.ec2_vpc_id
 
-  subnet_id                   = data.terraform_remote_state.vpc.outputs.private_subnets[0]
+  subnet_id                   = var.ec2_subnet_id
   associate_public_ip_address = var.associate_public_ip_address
   key_pair_name               = data.terraform_remote_state.keys.outputs.aws_key_pair_name
   instance_profile            = aws_iam_instance_profile.elasticsearch_kibana.name
@@ -43,44 +43,23 @@ module "ec2_elasticsearch_kibana" {
       from_port   = 22,
       to_port     = 22,
       protocol    = "tcp",
-      cidr_blocks = [data.terraform_remote_state.vpc.outputs.vpc_cidr_block],
+      cidr_blocks = var.ec2_ssh_access_cidr
       description = "Allow SSH"
     },
     {
       from_port = 80,
       to_port   = 80,
       protocol  = "tcp",
-      cidr_blocks = [
-        data.terraform_remote_state.vpc.outputs.vpc_cidr_block,
-        data.terraform_remote_state.vpc-apps-dev-eks-demoapps.outputs.vpc_cidr_block,
-      ],
+      cidr_blocks = var.ec2_application_access_cidr
       description = "Allow ElasticSearch/Kibana through Nginx"
     },
     {
       from_port = 443,
       to_port   = 443,
       protocol  = "tcp",
-      cidr_blocks = [
-        data.terraform_remote_state.vpc.outputs.vpc_cidr_block,
-        data.terraform_remote_state.vpc-apps-dev-eks-demoapps.outputs.vpc_cidr_block,
-      ],
+      cidr_blocks = var.ec2_application_access_cidr
       description = "Allow ElasticSearch/Kibana through Nginx"
     },
-  ]
-
-  dns_records_internal_hosted_zone = [
-    {
-      zone_id = data.terraform_remote_state.dns.outputs.aws_internal_zone_id[0],
-      name    = "kibana.${var.region}.aws.binbash.com.ar",
-      type    = "A",
-      ttl     = 3600
-    },
-    {
-      zone_id = data.terraform_remote_state.dns.outputs.aws_internal_zone_id[0],
-      name    = "elasticsearch.${var.region}.aws.binbash.com.ar",
-      type    = "A",
-      ttl     = 3600
-    }
   ]
 
   tags = local.tags

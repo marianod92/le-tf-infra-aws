@@ -122,7 +122,7 @@ variable "name" {
 #
 variable "aws_ami_os_id" {
   description = "AWS AMI Operating System Identificator"
-  default     = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"
+  default     = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
 }
 
 variable "aws_ami_os_owner" {
@@ -164,4 +164,27 @@ variable "tag_approved_ami_value" {
   type        = string
   description = "Set the specific tag ApprovedAMI ('true' | 'false') that identifies aws-config compliant AMIs"
   default     = "true"
+}
+variable "ec2_subnet_id" {
+  type        = string
+  description = "Set the subnet id for the EC2 kibana instance"
+  default     = "subnet-0c8398a4145991a1b"
+}
+
+variable "ec2_vpc_id" {
+  type        = string
+  description = "Set the vpc id for the EC2 kibana instance"
+  default     = "vpc-02ed8f213c7b6d869"
+}
+
+variable "ec2_ssh_access_cidr" {
+  type        = list(string)
+  description = "Set crds"
+  default     = ["172.18.0.0/20"]
+}
+
+variable "ec2_application_access_cidr" {
+  type        = list(string)
+  description = "Set crds"
+  default     = ["172.18.0.0/20", "10.1.0.0/16"]
 }
