@@ -11,9 +11,9 @@ module "ec2_elasticsearch_kibana" {
   tag_approved_ami_value = var.tag_approved_ami_value
 
   instance_type = var.instance_type
-  vpc_id        = var.ec2_vpc_id
+  vpc_id        = var.vpc_id
 
-  subnet_id                   = var.ec2_subnet_id
+  subnet_id                   = var.subnet_id
   associate_public_ip_address = var.associate_public_ip_address
   key_pair_name               = data.terraform_remote_state.keys.outputs.aws_key_pair_name
   instance_profile            = aws_iam_instance_profile.elasticsearch_kibana.name
@@ -43,21 +43,21 @@ module "ec2_elasticsearch_kibana" {
       from_port   = 22,
       to_port     = 22,
       protocol    = "tcp",
-      cidr_blocks = var.ec2_ssh_access_cidr
+      cidr_blocks = var.ssh_access_cidr
       description = "Allow SSH"
     },
     {
       from_port = 80,
       to_port   = 80,
       protocol  = "tcp",
-      cidr_blocks = var.ec2_application_access_cidr
+      cidr_blocks = var.application_access_cidr
       description = "Allow ElasticSearch/Kibana through Nginx"
     },
     {
       from_port = 443,
       to_port   = 443,
       protocol  = "tcp",
-      cidr_blocks = var.ec2_application_access_cidr
+      cidr_blocks = var.application_access_cidr
       description = "Allow ElasticSearch/Kibana through Nginx"
     },
   ]

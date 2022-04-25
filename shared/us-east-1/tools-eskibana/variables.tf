@@ -165,26 +165,26 @@ variable "tag_approved_ami_value" {
   description = "Set the specific tag ApprovedAMI ('true' | 'false') that identifies aws-config compliant AMIs"
   default     = "true"
 }
-variable "ec2_subnet_id" {
+variable "subnet_id" {
   type        = string
-  description = "Set the subnet id for the EC2 kibana instance"
+  description = "Set the subnet id for the EC2 instance"
   default     = "subnet-0c8398a4145991a1b"
 }
 
-variable "ec2_vpc_id" {
+variable "vpc_id" {
   type        = string
-  description = "Set the vpc id for the EC2 kibana instance"
+  description = "Set the vpc id for the EC2 instance"
   default     = "vpc-02ed8f213c7b6d869"
 }
 
-variable "ec2_ssh_access_cidr" {
+variable "ssh_access_cidr" {
   type        = list(string)
-  description = "Set crds"
+  description = "Set cidr for ssh access into the EC2 instance"
   default     = ["172.18.0.0/20"]
 }
 
-variable "ec2_application_access_cidr" {
+variable "application_access_cidr" {
   type        = list(string)
-  description = "Set crds"
+  description = "Set cidr for application access"
   default     = ["172.18.0.0/20", "10.1.0.0/16"]
 }
