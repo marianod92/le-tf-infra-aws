@@ -34,7 +34,7 @@ module "alb" {
       port               = 443
       protocol           = "HTTPS"
       ssl_policy        = "ELBSecurityPolicy-FS-1-2-Res-2019-08"
-      certificate_arn    = var.certificate_id
+      certificate_arn    = data.terraform_remote_state.certificates.outputs.aws_binbash_com_ar_arn
       target_group_index = 0
     }
   ]

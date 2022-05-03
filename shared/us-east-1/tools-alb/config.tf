@@ -46,3 +46,17 @@ data "terraform_remote_state" "kibana_instance" {
     key     = "shared/eskibana/terraform.tfstate"
   }
 }
+
+#
+# data type from output for security certs
+#
+data "terraform_remote_state" "certificates" {
+  backend = "s3"
+
+  config = {
+    region  = var.region
+    profile = var.profile
+    bucket  = var.bucket
+    key     = "${var.environment}/security-certs/terraform.tfstate"
+  }
+}
